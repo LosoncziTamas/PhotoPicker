@@ -14,31 +14,49 @@ class OnResultCallback : Activity() {
 
     companion object {
         @JvmStatic
-        var callback: CaptureImagePlugin.CaptureImageCallback? = null
+        var imageCaptureCallback: CaptureImagePlugin.ImageCallback? = null
+
+        private const val CAPTURE_IMAGE_ARG = "image_arg"
+
+        fun createImageCaptureIntent(activity: Activity, captureMethod: Int) = Intent().apply {
+            setClass(activity, OnResultCallback::class.java)
+            putExtra(CAPTURE_IMAGE_ARG, captureMethod)
+        }
     }
 
     private val easyImage: EasyImage = EasyImage.Builder(this)
-        .setCopyImagesToPublicGalleryFolder(true)
-        .allowMultiple(false)
-        .build()
+            .setCopyImagesToPublicGalleryFolder(true)
+            .allowMultiple(false)
+            .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (intent == null) {
             finishSelf(null, -1)
         } else {
-            easyImage.openCameraForImage(this)
+            when (val captureArg = intent.getIntExtra(CAPTURE_IMAGE_ARG, 0)){
+                CaptureImagePlugin.FROM_CAMERA -> {
+                    easyImage.openCameraForImage(this)
+                }
+                CaptureImagePlugin.FROM_GALLERY -> {
+                    easyImage.openGallery(this)
+                }
+                else -> {
+                    Log.e("OnResultCallback", "Invalid intent args $captureArg")
+                    finishSelf(null, -1)
+                }
+            }
         }
     }
 
     fun finishSelf(path: String?, orientation: Int) {
         if (path != null) {
-            callback?.onImageCaptured(path, orientation)
+            imageCaptureCallback?.onImageCaptured(path, orientation)
         } else {
-            callback?.onImageCaptured("", -1)
+            imageCaptureCallback?.onImageCaptured("", -1)
         }
         CaptureImagePlugin.mainActivity = null
-        callback = null
+        imageCaptureCallback = null
         finish()
     }
 

@@ -4,12 +4,8 @@ import android.app.Activity;
 
 class AndroidNative {
     
-    public static void takePhoto(Activity activity, CaptureImagePlugin.CaptureImageCallback callback) {
-         CaptureImagePlugin.setMainActivity(activity);
-         CaptureImagePlugin.captureImage(callback);
-    }
-    
-    public static void selectFromGallery() {
-    
+    public static void captureImage(Activity activity, CaptureImagePlugin.ImageCallback callback, int captureMethod) {
+        CaptureImagePlugin.setMainActivity(activity);
+        CaptureImagePlugin.captureImage(callback, captureMethod);
     }
 }

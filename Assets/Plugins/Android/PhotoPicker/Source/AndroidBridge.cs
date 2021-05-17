@@ -5,6 +5,12 @@ namespace Plugins.Android.PhotoPicker.Source
 {
     public class AndroidBridge : MonoBehaviour
     {
+        public enum CaptureMethod
+        {
+            FromGallery = 1,
+            FromCamera = 2,
+        }
+        
         private const string WrapperName = "com.photopicker.nativeWrappper.AndroidNative";
         private const string CaptureImagePluginName = "com.photopicker.photopicker.nativeWrappper.CaptureImagePlugin";
     
@@ -38,7 +44,7 @@ namespace Plugins.Android.PhotoPicker.Source
         {
             private Action<string, int> captureHandler;
             
-            public CaptureImageCallback(Action<string, int> captureHandlerIn) : base ($"{CaptureImagePluginName}$CaptureImageCallback")
+            public CaptureImageCallback(Action<string, int> captureHandlerIn) : base ($"{CaptureImagePluginName}$ImageCallback")
             {
                 captureHandler = captureHandlerIn;
             }
@@ -49,10 +55,11 @@ namespace Plugins.Android.PhotoPicker.Source
             }
         }
 
-        public void CaptureImage(Action<string, int> onCaptureImage)
+        public void CaptureImage(Action<string, int> onCaptureImage, CaptureMethod captureMethod)
         {
             Debug.Log($"[AndroidBridge] CaptureImage");
-            AndroidNative.CallStatic("captureImage", CurrentActivityContext, new CaptureImageCallback(onCaptureImage));
+            var captureMethodInt = (int) captureMethod;
+            AndroidNative.CallStatic("captureImage", CurrentActivityContext, new CaptureImageCallback(onCaptureImage), captureMethodInt);
         }
     }
 }
