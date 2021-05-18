@@ -1,0 +1,7 @@
+<dependencies>
+    <androidPackages>
+        <androidPackage spec="com.github.jkwiecien:EasyImage:3.2.0"/>
+        <!-- Update the dependency if kotlin version changes. -->
+        <androidPackage spec="org.jetbrains.kotlin:kotlin-stdlib:1.4.31"/>
+    </androidPackages>
+</dependencies>

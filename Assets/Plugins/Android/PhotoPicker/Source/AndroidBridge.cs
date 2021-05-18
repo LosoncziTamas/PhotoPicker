@@ -11,8 +11,8 @@ namespace Plugins.Android.PhotoPicker.Source
             FromCamera = 2,
         }
         
-        private const string WrapperName = "com.photopicker.nativeWrappper.AndroidNative";
-        private const string CaptureImagePluginName = "com.photopicker.photopicker.nativeWrappper.CaptureImagePlugin";
+        private const string WrapperName = "com.photopicker.nativeWrapper.AndroidNative";
+        private const string CaptureImagePluginName = "com.photopicker.nativeWrapper.CaptureImagePlugin";
     
         private AndroidJavaClass _androidNative;
     
@@ -57,9 +57,12 @@ namespace Plugins.Android.PhotoPicker.Source
 
         public void CaptureImage(Action<string, int> onCaptureImage, CaptureMethod captureMethod)
         {
-            Debug.Log($"[AndroidBridge] CaptureImage");
-            var captureMethodInt = (int) captureMethod;
-            AndroidNative.CallStatic("captureImage", CurrentActivityContext, new CaptureImageCallback(onCaptureImage), captureMethodInt);
+            Debug.Log($"[AndroidBridge] CaptureImage {captureMethod}");
+            if (Application.platform == RuntimePlatform.Android && !Application.isEditor)
+            {
+                var captureMethodInt = (int) captureMethod;
+                AndroidNative.CallStatic("captureImage", CurrentActivityContext, new CaptureImageCallback(onCaptureImage), captureMethodInt);
+            }
         }
     }
 }
