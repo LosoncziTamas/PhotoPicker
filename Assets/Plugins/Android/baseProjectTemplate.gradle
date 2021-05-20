@@ -2,6 +2,7 @@
 
 allprojects {
     buildscript {
+        ext.kotlin_version = "1.4.31"
         repositories {**ARTIFACTORYREPOSITORY**
             google()
             jcenter()
@@ -13,6 +14,7 @@ allprojects {
             // See official Gradle and Android Gradle Plugin compatibility table here https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
             // To specify a custom Gradle version in Unity, go do "Preferences > External Tools", uncheck "Gradle Installed with Unity (recommended)" and specify a path to a custom Gradle version
             classpath 'com.android.tools.build:gradle:3.6.0'
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
             **BUILD_SCRIPT_DEPS**
         }
     }
@@ -23,6 +25,7 @@ allprojects {
         flatDir {
             dirs "${project(':unityLibrary').projectDir}/libs"
         }
+        maven { url 'https://jitpack.io' }
     }
 }
 

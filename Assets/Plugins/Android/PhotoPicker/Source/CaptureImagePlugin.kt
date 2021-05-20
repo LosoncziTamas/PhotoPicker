@@ -2,6 +2,7 @@ package com.photopicker.nativeWrapper
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 
 class CaptureImagePlugin {
 
