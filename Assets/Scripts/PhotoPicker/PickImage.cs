@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using PhotoPicker.AsyncUtils;
 using Plugins.Android.PhotoPicker.Source;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ namespace PhotoPicker
         [SerializeField] private Button _selectFromGalleryButton;
         [SerializeField] private Button _takePhotoButton;
         [SerializeField] private AndroidBridge _androidBridge;
-        [SerializeField] private Image _image;
+        [SerializeField] private RawImage _image;
 
         private void OnEnable()
         {
@@ -31,7 +32,7 @@ namespace PhotoPicker
             var (success, result) = await CaptureImage(AndroidBridge.CaptureMethod.FromGallery);
             if (success)
             {
-                _image.material.mainTexture = result;
+                _image.texture = result;
             }
         }
         
@@ -40,7 +41,7 @@ namespace PhotoPicker
             var (success, result) = await CaptureImage(AndroidBridge.CaptureMethod.FromCamera);
             if (success)
             {
-                _image.material.mainTexture = result;
+                _image.texture = result;
             }        
         }
 
@@ -51,7 +52,10 @@ namespace PhotoPicker
             _androidBridge.CaptureImage(async (path, orientation) =>
             {
                 Debug.Log($"CaptureImage path {path} orientation {orientation}");
-
+                
+                // This wait is needed, otherwise the app shows a blank screen.
+                await new WaitForEndOfFrame();
+                
                 if (path != null && File.Exists(path))
                 {
                     var bitmapTexture = await ReadTextureAsync(path);

@@ -19,6 +19,7 @@ apply plugin: 'com.android.library'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 // Android Resolver Dependencies Start
+    implementation 'androidx.appcompat:appcompat:1.2.0' // Assets/Plugins/Android/PhotoPicker/Editor/nativeWrapperDependencies.xml:6
     implementation 'com.github.jkwiecien:EasyImage:3.2.0' // Assets/Plugins/Android/PhotoPicker/Editor/nativeWrapperDependencies.xml:3
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.31' // Assets/Plugins/Android/PhotoPicker/Editor/nativeWrapperDependencies.xml:5
 // Android Resolver Dependencies End

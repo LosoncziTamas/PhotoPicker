@@ -3,5 +3,6 @@
         <androidPackage spec="com.github.jkwiecien:EasyImage:3.2.0"/>
         <!-- Update the dependency if kotlin version changes. -->
         <androidPackage spec="org.jetbrains.kotlin:kotlin-stdlib:1.4.31"/>
+        <androidPackage spec="androidx.appcompat:appcompat:1.2.0"/>
     </androidPackages>
 </dependencies>
